@@ -3,50 +3,146 @@ var twitterStream = angular.module('myApp', ['chart.js'])
 twitterStream.controller("mainCtrl", ['$scope', 'socket',
 function ($scope, socket) {
   //chart labels
-  $scope.labels = ["iPhone", "iPad", "Android", "Web Client", "Other"];
+  $scope.labels = ["English", "Spanish", "French", "German", "Portuguese", "Chinese", "Other"];
   //chart colors
-  $scope.colors = ['#6c6a6c','#000000','#7FFD1F','#EC872A', '#9527C2'];
+  $scope.colors = ['#7b8cfe','#fe7bc6','#7af7dd','#e98e53', '#bd99f2', '#f2d699', '#b4b2b4'];
   //intial data values
-  $scope.trumpData = [0,0,0,0,0];
-  $scope.sandersData = [0,0,0,0,0];
+  $scope.brexitData = [0,0,0,0,0,0,0];
+  $scope.rioData = [0,0,0,0,0,0,0];
+  $scope.hillaryData = [0,0,0,0,0,0,0];
+  $scope.trumpData = [0,0,0,0,0,0,0];
+  $scope.dncData = [0,0,0,0,0,0,0];
+  $scope.euData = [0,0,0,0,0,0,0];
 
   socket.on('newTweet', function (tweet) {
     $scope.tweet = tweet.text
     $scope.user = tweet.user.screen_name
-    //parse source from payload
-    var source = tweet.source.split('>')[1].split('<')[0].split(' ')[2]
+
+    //parse language and location from payload
+    var lang = tweet.lang
+    var coords = tweet.coordinates
+    var place = tweet.place
+    var geo = tweet.geo
+
     //all hashtags in the tweet
     var hashtags = tweet.entities.hashtags.map(function(el){
       return el.text.toLowerCase()
     })
 
-    //check source and increment for #trump tweets
-    if (hashtags.indexOf('trump') !== -1){
-      switch (source) {
-        case 'iPhone': $scope.trumpData[0]++
+    //check source for geolocation
+    if (coords) console.log("Coordinates: ", coords.coordinates);
+    if (place) console.log("Place: ", place.bounding_box.coordinates[0][0]);
+    if (geo) console.log("Geo: ", geo.coordinates)
+
+
+    //check source and increment for #worldoceansday tweets
+    if (hashtags.indexOf('brexit') !== -1){
+      switch (lang) {
+        case 'en': $scope.brexitData[0]++
         break;
-        case 'iPad': $scope.trumpData[1]++
+        case 'es': $scope.brexitData[1]++
         break;
-        case 'Android': $scope.trumpData[2]++
+        case 'fr': $scope.brexitData[2]++
         break;
-        case 'Web': $scope.trumpData[3]++
+        case 'de': $scope.brexitData[3]++
         break;
-        default: $scope.trumpData[4]++
+        case 'pt': $scope.brexitData[4]++
+        break;
+        case 'zh': $scope.brexitData[5]++
+        break;
+        default: $scope.brexitData[6]++
+      }
+    }
+
+    //check source and increment for #FelizMiércoles tweets
+    else if (hashtags.indexOf('rio2016') !== -1) {
+      switch (lang) {
+        case 'en': $scope.rioData[0]++
+        break;
+        case 'es': $scope.rioData[1]++
+        break;
+        case 'fr': $scope.rioData[2]++
+        break;
+        case 'de': $scope.rioData[3]++
+        break;
+        case 'pt': $scope.rioData[4]++
+        break;
+        case 'zh': $scope.rioData[5]++
+        break;
+        default: $scope.rioData[6]++
       }
     }
 
     //check source and increment for #feelthebern tweets
-    else if (hashtags.indexOf('feelthebern') !== -1) {
-      switch (source) {
-        case 'iPhone': $scope.sandersData[0]++
+    else if (hashtags.indexOf('hillary') !== -1) {
+      switch (lang) {
+        case 'en': $scope.hillaryData[0]++
         break;
-        case 'iPad': $scope.sandersData[1]++
+        case 'es': $scope.hillaryData[1]++
         break;
-        case 'Android': $scope.sandersData[2]++
+        case 'fr': $scope.hillaryData[2]++
         break;
-        case 'Web': $scope.sandersData[3]++
+        case 'de': $scope.hillaryData[3]++
         break;
-        default: $scope.sandersData[4]++
+        case 'pt': $scope.hillaryData[4]++
+        break;
+        case 'zh': $scope.hillaryData[5]++
+        break;
+        default: $scope.hillaryData[6]++
+      }
+    }
+
+    else if (hashtags.indexOf('trump') !== -1) {
+      switch (lang) {
+        case 'en': $scope.trumpData[0]++
+        break;
+        case 'es': $scope.trumpData[1]++
+        break;
+        case 'fr': $scope.trumpData[2]++
+        break;
+        case 'de': $scope.trumpData[3]++
+        break;
+        case 'pt': $scope.trumpData[4]++
+        break;
+        case 'zh': $scope.trumpData[5]++
+        break;
+        default: $scope.trumpData[6]++
+      }
+    }
+
+    else if (hashtags.indexOf('dnc') !== -1) {
+      switch (lang) {
+        case 'en': $scope.dncData[0]++
+        break;
+        case 'es': $scope.dncData[1]++
+        break;
+        case 'fr': $scope.dncData[2]++
+        break;
+        case 'de': $scope.dncData[3]++
+        break;
+        case 'pt': $scope.dncData[4]++
+        break;
+        case 'zh': $scope.dncData[5]++
+        break;
+        default: $scope.dncData[6]++
+      }
+    }
+
+    else if (hashtags.indexOf('eu') !== -1) {
+      switch (lang) {
+        case 'en': $scope.euData[0]++
+        break;
+        case 'es': $scope.euData[1]++
+        break;
+        case 'fr': $scope.euData[2]++
+        break;
+        case 'de': $scope.euData[3]++
+        break;
+        case 'pt': $scope.euData[4]++
+        break;
+        case 'zh': $scope.euData[5]++
+        break;
+        default: $scope.euData[6]++
       }
     }
   });

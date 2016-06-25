@@ -1,5 +1,6 @@
 body {
- background-color: rgb(95, 165, 218);
+ background-color: rgb(66, 66, 66);
+ color: white;
 }
 
 #trump #sanders {
@@ -10,8 +11,8 @@ body {
 
 .name {
   font-weight:bold;
-  font-size:30px;
-  float: right;
+  font-size: 26px;
+  margin: auto;
 }
 
 .img {
